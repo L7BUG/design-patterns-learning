@@ -8,15 +8,78 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.1.0</version>
 	</parent>
-	
+
 	<groupId>com.l7bug</groupId>
 	<artifactId>design-patterns-learning</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1</version>
 
+	<name>design-patterns-learning</name>
+	<description>Java 设计模式学习项目 - 基于 iluwatar/java-design-patterns</description>
+
+	<modules>
+		<!-- 创建型模式 Creational Patterns -->
+		<module>creational/singleton</module>
+		<module>creational/factory-method</module>
+		<module>creational/abstract-factory</module>
+		<module>creational/builder</module>
+		<module>creational/prototype</module>
+		<module>creational/factory-kit</module>
+
+		<!-- 结构型模式 Structural Patterns -->
+		<module>structural/adapter</module>
+		<module>structural/decorator</module>
+		<module>structural/proxy</module>
+		<module>structural/facade</module>
+		<module>structural/composite</module>
+		<module>structural/flyweight</module>
+		<module>structural/bridge</module>
+
+		<!-- 行为型模式 Behavioral Patterns -->
+		<module>behavioral/strategy</module>
+		<module>behavioral/observer</module>
+		<module>behavioral/command</module>
+		<module>behavioral/template-method</module>
+		<module>behavioral/chain-of-responsibility</module>
+		<module>behavioral/mediator</module>
+		<module>behavioral/state</module>
+		<module>behavioral/visitor</module>
+		<module>behavioral/iterator</module>
+		<module>behavioral/memento</module>
+		<module>behavioral/interpreter</module>
+	</modules>
 
 	<properties>
 		<maven.compiler.source>25</maven.compiler.source>
 		<maven.compiler.target>25</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<lombok.version>1.18.36</lombok.version>
 	</properties>
+
+	<dependencies>
+		<!-- Lombok：简化样板代码 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
