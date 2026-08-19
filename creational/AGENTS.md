@@ -1,36 +1,36 @@
-# CREATIONAL DESIGN PATTERNS
+# 创建型设计模式
 
-## OVERVIEW
-6 completed modules demonstrating object creation mechanisms with unique pattern implementations.
+## 概述
+6 个已完成模块，演示对象创建机制的独特模式实现。
 
-## STRUCTURE
+## 结构
 ```
 creational/
-├── singleton/          # 5 single-threaded & multi-threaded implementations
-├── factory-method/     # Notification hierarchy with factory
-├── abstract-factory/   # UI theme families (Windows/Mac)
-├── builder/            # Computer with step-by-step construction
-├── prototype/          # ShapeCache with clone-based creation
-└── factory-kit/        # MessageFactory with type-based instantiation
+├── singleton/          # 5 种单线程和多线程实现
+├── factory-method/     # 通知层次结构与工厂
+├── abstract-factory/   # UI 主题族（Windows/Mac）
+├── builder/            # 电脑分步构建
+├── prototype/          # ShapeCache 基于克隆的创建
+└── factory-kit/        # MessageFactory 基于类型的实例化
 ```
 
-## WHERE TO LOOK
-| Task | Location | Notes |
-|------|----------|-------|
-| Singleton variants | `singleton/src/main/java/com/l7bug/singleton/` | 5 implementations: eager, lazy, double-checked, static, enum |
-| Factory pattern | `factory-method/src/main/java/com/l7bug/factorymethod/` | Notification + ConcreteNotification hierarchy |
-| Abstract factory | `abstract-factory/src/main/java/com/l7bug/abstractfactory/` | GUIFactory creates Button/Checkbox families |
-| Builder pattern | `builder/src/main/java/com/l7bug/builder/` | Computer class with Builder inner class |
-| Prototype pattern | `prototype/src/main/java/com/l7bug/prototype/` | ShapeCache stores cloneable shapes |
-| Factory kit | `factory-kit/src/main/java/com/l7bug/factorykit/` | MessageFactory with MessageType enum |
+## 查找指南
+| 任务 | 位置 | 备注 |
+|------|------|------|
+| 单例变体 | `singleton/src/main/java/com/l7bug/singleton/` | 5 种实现：饿汉、懒汉、双重检查、静态内部类、枚举 |
+| 工厂方法模式 | `factory-method/src/main/java/com/l7bug/factorymethod/` | Notification + ConcreteNotification 层次结构 |
+| 抽象工厂 | `abstract-factory/src/main/java/com/l7bug/abstractfactory/` | GUIFactory 创建 Button/Checkbox 族 |
+| 建造者模式 | `builder/src/main/java/com/l7bug/builder/` | Computer 类与 Builder 内部类 |
+| 原型模式 | `prototype/src/main/java/com/l7bug/prototype/` | ShapeCache 存储可克隆图形 |
+| 工厂套件 | `factory-kit/src/main/java/com/l7bug/factorykit/` | MessageFactory 与 MessageType 枚举 |
 
-## CONVENTIONS
-- **No Mockito**: Dependencies are simple; tests use direct instantiation
-- **Scenario-based test names**: Method names describe behavior (`shouldCreateSingletonWhen...`)
-- **Chinese comments**: Test files use Chinese for scenario descriptions
-- **5 singleton variants**: Eager, lazy, double-checked locking, static holder, enum
+## 约定
+- **无 Mockito**：依赖简单，测试使用直接实例化
+- **场景化测试名称**：方法名描述行为（`shouldCreateSingletonWhen...`）
+- **中文注释**：测试文件使用中文场景描述
+- **5 种单例变体**：饿汉、懒汉、双重检查锁、静态内部类、枚举
 
-## ANTI-PATTERNS
-- **Self-contained modules**: Each pattern is independent with no cross-module dependencies
-- **Complete implementations**: Unlike other directories, all modules have full src/ structure
-- **Multiple singleton approaches**: Same pattern implemented 5 different ways for comparison
+## 反模式
+- **自包含模块**：每个模式独立，无跨模块依赖
+- **完整实现**：与其他目录不同，所有模块都有完整的 src/ 结构
+- **多单例对比**：同一模式用 5 种不同方式实现，便于对比
