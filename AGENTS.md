@@ -1,46 +1,67 @@
-# AGENTS.md
+# PROJECT KNOWLEDGE BASE
 
-Java 设计模式学习项目（多模块 Maven），参考 iluwatar/java-design-patterns。
+**Generated:** 2026-08-19
+**Commit:** 03afe8b
+**Branch:** master
 
-## 语言约定
+## OVERVIEW
+Java 设计模式学习项目，基于 iluwatar/java-design-patterns，Maven 多模块结构。使用 Java 25、Lombok、Spring Boot 4.1.0 父 POM（非 Spring Boot 项目）。
 
-- 文档、注释、README、commit message 一律使用**简体中文**；代码标识符保留英文。
-- 每个模式的 `README.md` 是学习笔记，按 `LEARNING_PLAN.md` 中的模板书写。
+## STRUCTURE
+```
+design-patterns-learning/
+├── creational/          # 创建型模式（6个模块，全部完成）
+├── structural/          # 结构型模式（7个模块，2个完成）
+├── behavioral/          # 行为型模式（11个模块，全部空骨架）
+├── pom.xml              # 根 POM，声明 24 个模块
+├── CLAUDE.md            # Claude 规则入口
+├── LEARNING_PLAN.md     # 6 周学习计划
+└── README.md            # 项目说明（进度表已过时）
+```
 
-## 构建（JDK 25 是硬性要求）
+## WHERE TO LOOK
+| Task | Location | Notes |
+|------|----------|-------|
+| 学习计划 | `LEARNING_PLAN.md` | 36 个模式的学习路线 |
+| 编码规范 | `.claude/rules/` | common/ + java/ 规则 |
+| 构建配置 | `pom.xml` | Java 25、Lombok、ASM 9.10.1 |
+| 编辑器配置 | `.editorconfig` | Tab 缩进、UTF-8、LF |
+| IDE 检查 | `.idea/inspectionProfiles/` | Alibaba P3C 编码规约 |
 
-- 环境：JDK 25 + Maven 3.9+（`pom.xml` 中 `maven.compiler.source/target = 25`，需本地有 JDK 25）。
-- 编译全部：`mvn compile`
-- 单个模块测试（从根目录，已验证）：`mvn -pl creational/prototype test`
-- 全部测试：`mvn test`
-- 若需在模块目录内单独 `mvn ...`，须先在根目录执行 `mvn install -N` 把父 POM 装进本地仓库，否则解析不到父 POM。
+## CODE MAP
 
-## Java 25 + Lombok 关键坑
+| Symbol | Type | Location | Refs | Role |
+|--------|------|----------|------|------|
+| `App` | class | 各模块 `src/main/.../App.java` | 0 | 演示入口（main 方法） |
+| `*Test` | class | 各模块 `src/test/.../*Test.java` | 0 | 单元测试 |
+| `*Factory` | class | factory-method/abstract-factory | 多 | 工厂类 |
+| `*Singleton` | class | singleton/ | 5 | 5 种单例实现 |
 
-- 根 `pom.xml` 的 `maven-compiler-plugin` 已通过 `annotationProcessorPaths` 显式声明 Lombok，并把 ASM 覆盖为 `9.10.1` 以支持 Java 25。
-- **新增模块不要重复配置 maven-compiler-plugin**，直接继承父 POM 即可。
-- 若 Lombok 报 ASM / "invalid target" 类错误，先检查该模块是否意外覆盖了编译器配置。
+## CONVENTIONS
+- **模块独立**：每个模式一个 Maven 模块，独立 pom.xml
+- **命名**：模块名 `abstract-factory` → 包名 `com.l7bug.abstractfactory`
+- **测试**：JUnit 5、package-private 测试类、中文注释、无 Mockito
+- **缩进**：Tab（.editorconfig 规定）
+- **Java 25**：`maven.compiler.source/target = 25`，需 JDK 25
 
-## 新增一个模式模块
+## ANTI-PATTERNS (THIS PROJECT)
+- **空骨架模块**：16/24 模块只有 pom.xml，无 src/（5 structural + 11 behavioral）
+- **POM 重复**：8 个完整模块各自声明 junit-jupiter + surefire（违反 DRY）
+- **非 Spring Boot**：误用 spring-boot-starter-parent 4.1.0 作父 POM
+- **进度表过时**：README/LEARNING_PLAN 进度与实际不符
 
-模块按 `creational|structural|behavioral/<pattern-name>/` 组织，名字用连字符（如 `factory-method`）。参考 `creational/prototype/` 的结构：
+## COMMANDS
+```bash
+mvn validate          # 验证项目
+mvn compile           # 编译项目
+mvn install -N        # 安装父 POM
+mvn clean             # 清理构建
+mvn compile -DskipTests  # 跳过测试编译
+```
 
-- `pom.xml`：parent 指向根 POM，`<artifactId>` 用连字符命名。Lombok/slf4j/logback 已在父 POM 中，无需重复声明；但 **JUnit 5（`junit-jupiter`，scope=test）和 `maven-surefire-plugin` 不会自动继承，必须手动加**（照抄 prototype 的 pom）。
-- 新模块需在根 `pom.xml` 的 `<modules>` 中注册。
-- 包名去掉连字符：`com.l7bug.factorymethod`（`chain-of-responsibility` → `chainofresponsibility`）。
-- 结构：`App.java`（`@Slf4j` 的 main 演示类，用 `log.info` 输出）、模式核心类、`src/test/java/.../XxxTest.java`（JUnit 5）、`README.md`（学习笔记）。
-- 提交信息风格：`实现 X 模式：Y 示例`（中文，照 git log 现有格式）。
-
-## 进度现状
-
-- 仅 8 个模块有代码：creational 全部 6 个 + structural 的 `adapter`、`decorator`。
-- 其余 17 个模块（proxy/facade/composite/flyweight/bridge 及全部 behavioral）是**空壳，只有 pom.xml**。别假设它们已有实现。
-- 实现顺序按 `LEARNING_PLAN.md`；参考实现只读仓库在 `~/java-design-patterns-reference`。
-
-## 代码风格
-
-- `.editorconfig`：缩进用 **tab**（宽度 4）。IDEA 的 `idea_reformat_file` 不会自动遵循，注意 Java 源文件用 tab 缩进。
-
-## IDEA MCP
-
-- `opencode.json` 配置了 IDEA MCP（`http://127.0.0.1:64342/stream`）。调用任何 `idea_*` 工具时必须传 `projectPath=/home/l/Documents/github-projetc/design-patterns-learning`，否则报"Unable to determine the target project"。
+## NOTES
+- **Java 25 环境**：需 JDK 25 + ASM 9.10.1 覆盖
+- **Lombok**：provided scope，编译时注解处理
+- **无 CI**：无 .github/workflows、无 Maven Wrapper
+- **无 codegraph**：jdtls LSP 未安装
+- **Alibaba P3C**：IntelliJ 已启用约 70 条编码规约检查
