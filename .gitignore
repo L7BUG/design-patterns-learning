@@ -1,6 +1,9 @@
 HELP.md
 **/logs/**
 target/
+
+### Claude Code ###
+.claude/settings.local.json
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
