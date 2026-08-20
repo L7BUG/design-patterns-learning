@@ -25,6 +25,7 @@
 		<module>creational/builder</module>
 		<module>creational/prototype</module>
 		<module>creational/factory-kit</module>
+		<module>creational/game-character</module>
 
 		<!-- 结构型模式 Structural Patterns -->
 		<module>structural/adapter</module>
