@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# Conventional Commits 校验（commit-msg hook）
+#
+# 启用：git config core.hooksPath .githooks
+# 绕过（不推荐）：git commit --no-verify
+#
+# 规范格式：<type>(<scope>): <中文描述>
+#   type  = feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert
+#   scope = 小写模块名，可省略，如 (game-character)、(creational/singleton)
+#   描述  = 中文，冒号后必须有且只有一个空格
+
+msg_file=$1
+[ -n "$msg_file" ] || exit 0
+
+# 取第一条非空、非注释行作为首行
+header=$(grep -v '^#' "$msg_file" 2>/dev/null | sed '/^[[:space:]]*$/d' | head -n 1)
+
+if [ -z "$header" ]; then
+	echo "commit-msg: 提交信息为空" >&2
+	exit 1
+fi
+
+# 放行合并/回滚/自动生成的提交信息
+case "$header" in
+	"Merge "* | "Revert "* | "fixup! "* | "squash! "* | "Initial commit"*)
+		exit 0
+		;;
+esac
+
+pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9][a-z0-9./_-]*\))?!?: .+'
+
+if ! printf '%s\n' "$header" | grep -Eq "$pattern"; then
+	cat >&2 <<'EOF'
+
+✖ 提交信息不符合 Conventional Commits 规范
+
+  期望格式：<type>(<scope>): <描述>
+  示例    ：feat(game-character): 实现英雄工厂与属性成长
+
+  type ：feat fix docs style refactor perf test build ci chore revert
+  scope：小写模块名，可省略，如 (proxy)、(creational/singleton)
+  注意 ：冒号后必须有且只有一个空格，描述用中文
+
+EOF
+	printf '  你的首行：%s\n\n' "$header" >&2
+	echo "  如确认要绕过：git commit --no-verify" >&2
+	exit 1
+fi
+
+# 首行长度（按字符数计，中文算 1 个字符）
+len=$(printf '%s' "$header" | LC_ALL=C.UTF-8 wc -m 2>/dev/null | tr -d ' ')
+case "$len" in
+	'' | *[!0-9]*) ;; # 取不到长度就跳过该检查
+	*)
+		if [ "$len" -gt 100 ]; then
+			echo "commit-msg: 提交信息首行 ${len} 字符，超过 100 上限" >&2
+			exit 1
+		fi
+		;;
+esac
+
+exit 0

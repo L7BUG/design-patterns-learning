@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# 暂存内容安全检查（pre-commit hook）
+#
+# 拦截一类具体事故：工具/命令误把 `~` 当成字面路径，在工作区里建出真实目录。
+# 本项目发生过：ipsych 运行 Java 时用 -Duser.home=~ ，生成了
+#   creational/game-character/~/.config/design-patterns-learning/game-character/user-config.properties
+#
+# 绕过（不推荐）：git commit --no-verify
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -n "$staged" ] || exit 0
+
+bad=$(printf '%s\n' "$staged" | grep -E '(^|/)~(/|$)' || true)
+if [ -n "$bad" ]; then
+	echo "pre-commit: 暂存区包含误建的 '~' 目录，已阻止提交：" >&2
+	printf '%s\n' "$bad" | sed 's/^/  /' >&2
+	echo "  处理：git restore --staged <路径> 后删除该目录" >&2
+	exit 1
+fi
+
+bad=$(printf '%s\n' "$staged" | grep -E '(^|/)target/' || true)
+if [ -n "$bad" ]; then
+	echo "pre-commit: 暂存区包含构建产物 target/，已阻止提交：" >&2
+	printf '%s\n' "$bad" | sed 's/^/  /' >&2
+	exit 1
+fi
+
+exit 0

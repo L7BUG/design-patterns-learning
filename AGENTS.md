@@ -58,6 +58,13 @@ mvn clean             # 清理构建
 mvn compile -DskipTests  # 跳过测试编译
 ```
 
+## 提交规范（必须）
+- **提交前加载 `git-commit` 技能**（`.opencode/skills/git-commit/SKILL.md`），按其中流程执行；也可用 `/commit` 命令触发
+- 消息格式：Conventional Commits + 中文描述，如 `feat(game-character): 实现英雄工厂与属性成长`
+- 改动的 `*.java` 需先经 IDEA MCP 的 `reformat_file` + `lint_files` 处理；**排除** `pom.xml`、`*.properties`（IDE 的 XML 格式化会把 Tab 换成空格）
+- 禁止 `git add -A` / `git add .`，必须显式列路径
+- `.githooks/` 已启用（`git config core.hooksPath .githooks`）：`commit-msg` 校验消息格式，`pre-commit` 拦截 `~` 目录与 `target/` 产物；不要用 `--no-verify` 绕过
+
 ## 注意事项
 - **Java 25 环境**：需 JDK 25 + ASM 9.10.1 覆盖
 - **Lombok**：provided scope，编译时注解处理
