@@ -86,7 +86,7 @@ public enum GameConfig {
 	}
 
 	private String getUserConfigPath() {
-		return String.join(File.separator, System.getProperty("user.home"), ".config" ,"design-patterns-learning" ,"game-character", "user-config.properties");
+		return String.join(File.separator, System.getProperty("user.home"), ".config", "design-patterns-learning", "game-character", "user-config.properties");
 	}
 
 	private String toUserConfigString() {
