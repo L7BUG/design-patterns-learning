@@ -14,7 +14,6 @@ design-patterns-learning/
 ├── structural/          # 结构型模式（7个模块，2个完成）
 ├── behavioral/          # 行为型模式（11个模块，全部空骨架）
 ├── pom.xml              # 根 POM，声明 24 个模块
-├── CLAUDE.md            # Claude 规则入口
 ├── LEARNING_PLAN.md     # 6 周学习计划
 └── README.md            # 项目说明（进度表已过时）
 ```
@@ -23,7 +22,7 @@ design-patterns-learning/
 | 任务 | 位置 | 备注 |
 |------|------|------|
 | 学习计划 | `LEARNING_PLAN.md` | 36 个模式的学习路线 |
-| 编码规范 | `.claude/rules/` | common/ + java/ 规则 |
+| 提交规范 | `.opencode/skills/git-commit/` | 提交流程、消息格式、hooks 说明 |
 | 构建配置 | `pom.xml` | Java 25、Lombok、ASM 9.10.1 |
 | 编辑器配置 | `.editorconfig` | Tab 缩进、UTF-8、LF |
 | IDE 检查 | `.idea/inspectionProfiles/` | Alibaba P3C 编码规约 |
